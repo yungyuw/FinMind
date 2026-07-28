@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         # Python 3.7 dropped because dev dependency black==24.8.0 requires >=3.8
-        python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
+        python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14" ]
     steps:
       - uses: actions/checkout@v4
       - name: Install uv
@@ -26,6 +26,8 @@ jobs:
           enable-cache: true
       - name: Set up Python ${{ matrix.python-version }}
         run: uv python install ${{ matrix.python-version }}
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libxml2-dev libxslt1-dev
       - name: Install dependencies
         run: uv sync --group dev --python ${{ matrix.python-version }}
       - name: Test with pytest
