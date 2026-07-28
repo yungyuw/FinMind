@@ -26,6 +26,8 @@ jobs:
           enable-cache: true
       - name: Set up Python ${{ matrix.python-version }}
         run: uv python install ${{ matrix.python-version }}
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libxml2-dev libxslt1-dev
       - name: Install dependencies
         run: uv sync --group dev --python ${{ matrix.python-version }}
       - name: Test with pytest
